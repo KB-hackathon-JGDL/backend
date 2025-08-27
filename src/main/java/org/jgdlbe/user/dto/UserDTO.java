@@ -1,0 +1,32 @@
+package org.jgdlbe.user.dto;
+
+import java.time.LocalDate;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.jgdlbe.common.domain.Region;
+import org.jgdlbe.common.dto.BaseDTO;
+import org.jgdlbe.user.domain.UserRole;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class UserDTO extends BaseDTO {
+    private UUID userId;
+
+    private String username;
+    private String name;
+    private UserRole role;
+    private LocalDate birthDate;
+    private Character gender;
+    private String phone;
+    private Region region;
+    private String info;
+
+    private String accessToken;
+}
