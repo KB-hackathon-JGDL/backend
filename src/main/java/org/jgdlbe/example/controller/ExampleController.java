@@ -1,9 +1,9 @@
 package org.jgdlbe.example.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Parameter;
 import org.jgdlbe.common.exception.BindingErrorException;
 import org.jgdlbe.example.dto.ExampleCreateDTO;
 import org.jgdlbe.example.dto.ExampleDTO;
@@ -28,52 +28,39 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ExampleController {
 
-  private final ExampleService exampleService;
+    private final ExampleService exampleService;
 
-  @GetMapping("/examples/{exampleId}")
-  public ExampleDTO getExample(
-      @Parameter(description = "Example ID", required = true) @PathVariable("exampleId") UUID exampleId){
+    @GetMapping("/examples/{exampleId}")
+    public ExampleDTO getExample(@PathVariable("exampleId") UUID exampleId) {
 
-    return exampleService.getExample(exampleId);
-  }
-
-  @GetMapping("/examples")
-  public Page<ExampleDTO> getExampleList(
-      @ModelAttribute ExampleFilterDTO filterDTO){
-
-    return exampleService.getExampleList(filterDTO);
-  }
-
-  @PostMapping("/examples")
-  public ExampleDTO createExample(
-      @RequestBody ExampleCreateDTO createDTO, BindingResult bindingResult){
-
-    if (bindingResult.hasErrors()) {
-      throw new BindingErrorException(bindingResult);
+        return exampleService.getExample(exampleId);
     }
 
-    return exampleService.createExample(createDTO);
-  }
+    @GetMapping("/examples")
+    public Page<ExampleDTO> getExampleList(@ModelAttribute ExampleFilterDTO filterDTO) {
 
-  @PutMapping("/examples/{exampleId}")
-  public ExampleDTO updateExample(
-      @Parameter(description = "Example ID", required = true) @PathVariable("exampleId") UUID exampleId,
-      @RequestBody ExampleUpdateDTO updateDTO, BindingResult bindingResult){
-
-    if (bindingResult.hasErrors()) {
-      throw new BindingErrorException(bindingResult);
+        return exampleService.getExampleList(filterDTO);
     }
 
-    updateDTO.setExampleId(exampleId);
-    return exampleService.updateExample(updateDTO);
-  }
+    @PostMapping("/examples")
+    public ExampleDTO createExample(@RequestBody ExampleCreateDTO createDTO) {
 
-  @DeleteMapping("/examples/{exampleId}")
-  public void deleteExample(
-      @Parameter(description = "Example ID", required = true) @PathVariable("exampleId") UUID exampleId){
+        return exampleService.createExample(createDTO);
+    }
 
-    exampleService.deleteExample(exampleId);
-  }
+    @PutMapping("/examples/{exampleId}")
+    public ExampleDTO updateExample(@PathVariable("exampleId") UUID exampleId,
+        @RequestBody ExampleUpdateDTO updateDTO) {
+
+        updateDTO.setExampleId(exampleId);
+        return exampleService.updateExample(updateDTO);
+    }
+
+    @DeleteMapping("/examples/{exampleId}")
+    public void deleteExample(@PathVariable("exampleId") UUID exampleId) {
+
+        exampleService.deleteExample(exampleId);
+    }
 
 
 }
