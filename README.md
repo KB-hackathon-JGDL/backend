@@ -1,3 +1,5 @@
+# GIT 커밋 컨벤션
+
 ## 1. 브랜치 이름 규칙
 
 ```jsx
@@ -14,14 +16,15 @@ style - 디자인 관련 수정
 
 ## 2. 브랜치 생성
 
-![image.png](attachment:104f00c7-37d0-4c7a-93f0-b08f47379ac2:image.png)
+<img width="1505" height="788" alt="image" src="https://github.com/user-attachments/assets/038cd69d-7215-42d4-8d2b-10bc25d06abf" />
+
 
 이슈 화면에서 Create a branch 버튼 클릭
 → feature/(이슈 코드)-(이슈 내용) 형태로 이름 작성
 → Branch source를 develop 로 선택
 → Create branch 
 
-![Create branch 클릭하면 뜨는 창](attachment:870fb53f-47f2-426a-8709-0feb5a1777f7:image.png)
+<img width="507" height="196" alt="image" src="https://github.com/user-attachments/assets/3f792662-0ad8-4db2-aa3b-1640dc9cf15d" />
 
 Create branch 클릭하면 뜨는 창
 
