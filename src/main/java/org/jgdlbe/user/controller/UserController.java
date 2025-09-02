@@ -20,22 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping("/users")
     public UserDTO addUser(@RequestBody UserCreateDTO userCreateDTO) {
         return userService.createUser(userCreateDTO);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public UserDTO signIn(@RequestBody UserLoginDTO userLoginDTO) {
         return userService.login(userLoginDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public UserDTO getUser(@PathVariable UUID id) {
         return userService.getUser(id);
     }
