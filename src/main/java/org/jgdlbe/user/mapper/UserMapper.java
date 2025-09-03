@@ -15,7 +15,7 @@ public class UserMapper {
             .username(dto.getUsername())
             .name(dto.getName())
             .password(dto.getPassword())
-            .role(dto.getRole())
+            .userRole(dto.getRole())
             .birthDate(dto.getBirthDate())
             .gender(dto.getGender())
             .phone(dto.getPhone())
@@ -26,9 +26,10 @@ public class UserMapper {
 
     public UserDTO toDTO(UserEntity entity) {
         return UserDTO.builder()
+            .userId(entity.getUserId())
             .username(entity.getUsername())
             .name(entity.getName())
-            .role(entity.getRole())
+            .role(entity.getUserRole())
             .birthDate(entity.getBirthDate())
             .gender(entity.getGender())
             .phone(entity.getPhone())
