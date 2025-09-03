@@ -2,6 +2,8 @@ package org.jgdlbe.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -36,10 +38,12 @@ public class UserEntity extends BaseEntity {
     private String username;
     private String name;
     private String password;
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private LocalDate birthDate;
     private Character gender;
     private String phone;
+    @Enumerated(EnumType.STRING)
     private Region region;
     private String info;
 

@@ -32,9 +32,8 @@ public class ErrorCode {
         "유저를 찾을 수 없습니다.");
     public final static ErrorCode USER_IS_EXISTED = new ErrorCode(
         "이미 존재하는 유저입니다.");
-    //TODO 바꿔야함
-    public final static ErrorCode PASSWORD_IS_NOT_MATCHED = new ErrorCode(
-        "패스워드가 일치하지 않습니다.");
+    public final static ErrorCode INVALID_USERNAME_OR_PASSWORD = new ErrorCode(
+        "아이디 또는 패스워드가 일치하지 않습니다.");
     public final static ErrorCode USER_ALREADY_DELETED = new ErrorCode(
         "USER.ERROR.USER_ALREADY.DELETED");
 
