@@ -32,4 +32,5 @@ public class MentoringReservationEntity {
 
     private Integer MentoringTime;
     private LocalDate MentoringDate;
+    private String consultationCard;
 }

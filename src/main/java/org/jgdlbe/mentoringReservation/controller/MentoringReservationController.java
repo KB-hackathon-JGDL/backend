@@ -6,8 +6,11 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.mentoringReservation.dto.CreateMentoringReservationDTO;
+import org.jgdlbe.mentoringReservation.dto.MentoringReservationDTO;
+import org.jgdlbe.mentoringReservation.dto.MentoringReservationRequestDTO;
 import org.jgdlbe.mentoringReservation.service.MentoringReservationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +34,24 @@ public class MentoringReservationController {
         mentoringService.createMentoringSchedule(userId, reservationDTOList);
     }
 
-    @PatchMapping("/users/{userId}/mentoring-reservations/{reservationId}")
-    public void reservationMentoring(@PathVariable UUID userId, @PathVariable UUID reservationId) {
+    @PatchMapping("/mentoring-reservations/{mentoringReservationsId}")
+    public void reservationMentoring(@PathVariable UUID mentoringReservationsId,
+        @RequestBody MentoringReservationRequestDTO requestDTO) {
 
-        mentoringService.reservationMentoring(userId, reservationId);
+        mentoringService.reservationMentoring(mentoringReservationsId, requestDTO);
+    }
+
+
+    @GetMapping("/mentoring-reservations/{mentoringReservationsId}")
+    public MentoringReservationDTO getMentoringReservation(
+        @PathVariable UUID mentoringReservationsId) {
+
+        return mentoringService.getMentoringReservation(mentoringReservationsId);
+    }
+
+    @GetMapping("/users/{userId}/mentoring-reservations")
+    public List<MentoringReservationDTO> getReservationList(@PathVariable UUID userId) {
+
+        return mentoringService.getReservationList(userId);
     }
 }

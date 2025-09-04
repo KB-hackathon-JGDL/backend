@@ -17,7 +17,7 @@ public class UserCreateDTO {
     private String username;
     private String name;
     private String password;
-    private UserRole role;
+    private UserRole userRole;
     private LocalDate birthDate;
     private Character gender;
     private String phone;
