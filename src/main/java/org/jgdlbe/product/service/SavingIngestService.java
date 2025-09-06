@@ -92,6 +92,8 @@ public class SavingIngestService {
                         for (FssOptionRateDTO op : options) {
                             DepositRate rate = DepositRate.builder()
                                     .product(product)
+                                    .rsrvType(op.getRsrvType() == null ? "NA" : op.getRsrvType())
+                                    .rsrvTypeNm(op.getRsrvTypeNm())
                                     .intRateType(op.getIntrRateType())
                                     .intrRateTypeNm(op.getIntrRateTypeNm())
                                     .saveTrm(op.getSaveTrm())

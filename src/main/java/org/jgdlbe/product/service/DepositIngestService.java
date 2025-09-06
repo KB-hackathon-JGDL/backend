@@ -101,6 +101,8 @@ public class DepositIngestService {
                             if (op == null) continue;
                             DepositRate rate = DepositRate.builder()
                                     .product(product)
+                                    .rsrvType("NA")
+                                    .rsrvTypeNm(null)
                                     .intRateType(op.getIntrRateType())
                                     .intrRateTypeNm(op.getIntrRateTypeNm())
                                     .saveTrm(op.getSaveTrm())
