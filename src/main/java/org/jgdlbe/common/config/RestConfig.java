@@ -1,4 +1,4 @@
-package org.jgdlbe.config;
+package org.jgdlbe.common.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
