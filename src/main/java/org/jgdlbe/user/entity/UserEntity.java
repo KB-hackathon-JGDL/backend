@@ -41,7 +41,6 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private LocalDate birthDate;
-    private Character gender;
     private String phone;
     @Enumerated(EnumType.STRING)
     private Region region;
