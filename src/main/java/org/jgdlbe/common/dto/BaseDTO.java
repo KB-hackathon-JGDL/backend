@@ -13,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class BaseDTO implements Serializable {
 
-    @JsonIgnore
     private UUID createdBy;
     private LocalDateTime createdDate;
     @JsonIgnore

@@ -23,7 +23,6 @@ public class UserDTO extends BaseDTO {
     private String name;
     private UserRole userRole;
     private LocalDate birthDate;
-    private Character gender;
     private String phone;
     private Region region;
     private String info;

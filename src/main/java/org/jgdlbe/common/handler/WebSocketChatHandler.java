@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.chat.dto.ChatMessageDTO;
+import org.jgdlbe.chat.service.ChatLogService;
 import org.jgdlbe.common.domain.ChatType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -23,9 +24,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @RequiredArgsConstructor
 public class WebSocketChatHandler extends TextWebSocketHandler {
 
-
-
     private final ObjectMapper mapper;
+
+    private final ChatLogService chatLogService;
 
     // 방ID -> 방에 있는 세션 1~2명
     private final Map<UUID, Set<WebSocketSession>> chatRoomSessions = new ConcurrentHashMap<>();
@@ -51,16 +52,19 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         switch (chatMessageDTO.getChatType()) {
             case TALK:
                 // 모든 세션에 전송
+                chatLogService.createChatLog(chatMessageDTO);
                 broadcastToRoom(roomId, msgJson);
                 break;
 
             case JOIN:
                 chatMessageDTO.setMessage("상대가 입장했습니다.");
+                chatLogService.createChatLog(chatMessageDTO);
                 broadcastToRoom(roomId, mapper.writeValueAsString(chatMessageDTO));
                 break;
 
             case LEAVE:
                 chatMessageDTO.setMessage("상대가 퇴장했습니다.");
+                chatLogService.createChatLog(chatMessageDTO);
                 broadcastToRoom(roomId, mapper.writeValueAsString(chatMessageDTO));
                 // 자기 세션 제거
                 chatRoomSessions.get(roomId).remove(session);
