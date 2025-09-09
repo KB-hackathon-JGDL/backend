@@ -45,5 +45,8 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Region region;
     private String info;
+    private String businessField;
+    private String career;
+    private String credentials;
 
 }

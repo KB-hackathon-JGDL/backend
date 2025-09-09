@@ -26,6 +26,9 @@ public class UserDTO extends BaseDTO {
     private String phone;
     private Region region;
     private String info;
+    private String businessField;
+    private String career;
+    private String credentials;
 
     private String accessToken;
 }
