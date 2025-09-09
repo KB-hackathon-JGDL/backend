@@ -1,18 +1,20 @@
 package org.jgdlbe.user.service;
 
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.common.exception.DataNotFoundException;
 import org.jgdlbe.common.exception.ErrorCode;
 import org.jgdlbe.common.exception.InvalidRequestException;
+import org.jgdlbe.user.domain.UserRole;
 import org.jgdlbe.user.dto.UserCreateDTO;
 import org.jgdlbe.user.dto.UserDTO;
 import org.jgdlbe.user.dto.UserLoginDTO;
+import org.jgdlbe.user.entity.MentorReviewEntity;
 import org.jgdlbe.user.entity.UserEntity;
 import org.jgdlbe.user.mapper.UserMapper;
 import org.jgdlbe.user.repository.UserRepository;
+import org.jgdlbe.user.repository.MentorReviewRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final MentorReviewRepository mentorReviewRepository;
 
     private final UserMapper userMapper;
 
@@ -38,6 +42,14 @@ public class UserService {
         entity.setPassword(encoder.encode(createDTO.getPassword()));
 
         UserEntity created = userRepository.save(entity);
+
+        if(created.getUserRole() == UserRole.ROLE_MENTOR) {
+            MentorReviewEntity reviewEntity = MentorReviewEntity.builder()
+                .userId(created.getUserId())
+                .build();
+            mentorReviewRepository.save(reviewEntity);
+        }
+
         return userMapper.toDTO(created);
     }
 
