@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>1대1 WebSocket 채팅</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        .messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: #f9f9f9; }
+        .message { margin: 5px 0; padding: 5px; }
+        .sent { background: #007bff; color: white; text-align: right; }
+        .received { background: #e9ecef; }
+        .system { background: #fff3cd; color: #856404; font-style: italic; text-align: center; }
+        .status { padding: 10px; margin: 10px 0; font-weight: bold; }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+        .btn-row { display: flex; gap: 10px; }
+        .btn-row button { flex: 1; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>1대1 WebSocket 채팅</h2>
+
+    <div id="status" class="status disconnected">연결되지 않음</div>
+
+    <input type="text" id="myUuid" placeholder="내 UUID">
+    <input type="text" id="receiverUuid" placeholder="상대방 UUID">
+    <input type="text" id="mentoringReservationId" placeholder="멘토링 예약 ID (채팅방 UUID)">
+
+    <div class="btn-row">
+        <button onclick="connect()">연결</button>
+        <button onclick="disconnect()">연결 종료</button>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <input type="text" id="messageInput" placeholder="메시지 입력" onkeypress="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()">메시지 전송</button>
+    <button onclick="clearMessages()" style="background: #6c757d; color: white;">채팅 지우기</button>
+</div>
+
+<script>
+    let socket = null;
+    let myUuid = '';
+    let receiverUuid = '';
+    let roomId = '';
+
+    function connect() {
+        myUuid = document.getElementById('myUuid').value.trim();
+        receiverUuid = document.getElementById('receiverUuid').value.trim();
+        roomId = document.getElementById('mentoringReservationId').value.trim();
+
+        if (!myUuid || !receiverUuid || !roomId) {
+            alert('UUID와 채팅방 ID를 모두 입력하세요');
+            return;
+        }
+
+        socket = new SockJS('/ws');
+
+        socket.onopen = function() {
+            updateStatus('연결됨', 'connected');
+            addSystemMessage('채팅방에 자동 입장되었습니다.');
+            sendJoinMessage();
+        };
+
+        socket.onmessage = function(event) {
+            const msg = JSON.parse(event.data);
+            const sender = msg.sender;
+
+            if (msg.chatType === 'LEAVE') {
+                addSystemMessage('상대방이 채팅을 종료했습니다.');
+                updateStatus('연결 종료', 'disconnected');
+                socket.close();
+                return;
+            }
+
+            if (sender === myUuid) {
+                addMessage('나', msg.message, 'sent');
+            } else {
+                addMessage('상대방', msg.message, 'received');
+            }
+        };
+
+        socket.onclose = function() {
+            if (socket) addSystemMessage('연결이 종료되었습니다.');
+            updateStatus('연결 종료', 'disconnected');
+            socket = null;
+        };
+
+        socket.onerror = function() {
+            updateStatus('연결 오류', 'disconnected');
+            addSystemMessage('연결 오류 발생');
+        };
+    }
+
+    function disconnect() {
+        if (!socket || socket.readyState !== 1) return;
+        sendLeaveMessage();
+        socket.close();
+    }
+
+    function sendMessage() {
+        const text = document.getElementById('messageInput').value.trim();
+        if (!text || !socket || socket.readyState !== 1) return;
+
+        const message = {
+            sender: myUuid,
+            receiver: receiverUuid,
+            mentoringReservationId: roomId,
+            chatType: 'TALK',
+            message: text
+        };
+
+        socket.send(JSON.stringify(message));
+        document.getElementById('messageInput').value = '';
+    }
+
+    function sendJoinMessage() {
+        const joinMsg = {
+            sender: myUuid,
+            receiver: receiverUuid,
+            mentoringReservationId: roomId,
+            chatType: 'JOIN',
+            message: ''
+        };
+        socket.send(JSON.stringify(joinMsg));
+    }
+
+    function sendLeaveMessage() {
+        const leaveMsg = {
+            sender: myUuid,
+            receiver: receiverUuid,
+            mentoringReservationId: roomId,
+            chatType: 'LEAVE',
+            message: ''
+        };
+        socket.send(JSON.stringify(leaveMsg));
+    }
+
+    function addMessage(sender, text, type) {
+        const messagesDiv = document.getElementById('messages');
+        const div = document.createElement('div');
+        div.className = `message ${type}`;
+        div.innerHTML = `<strong>${sender}:</strong> ${text} <small>(${new Date().toLocaleTimeString()})</small>`;
+        messagesDiv.appendChild(div);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function addSystemMessage(text) {
+        const messagesDiv = document.getElementById('messages');
+        const div = document.createElement('div');
+        div.className = 'message system';
+        div.textContent = text;
+        messagesDiv.appendChild(div);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function updateStatus(text, cls) {
+        const statusDiv = document.getElementById('status');
+        statusDiv.textContent = text;
+        statusDiv.className = `status ${cls}`;
+    }
+
+    function clearMessages() {
+        document.getElementById('messages').innerHTML = '';
+    }
+</script>
+</body>
+</html>

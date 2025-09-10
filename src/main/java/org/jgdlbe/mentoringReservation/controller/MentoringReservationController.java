@@ -34,19 +34,19 @@ public class MentoringReservationController {
         mentoringService.createMentoringSchedule(userId, reservationDTOList);
     }
 
-    @PatchMapping("/mentoring-reservations/{mentoringReservationsId}")
-    public void reservationMentoring(@PathVariable UUID mentoringReservationsId,
+    @PatchMapping("/mentoring-reservations/{mentoringReservationId}")
+    public void reservationMentoring(@PathVariable UUID mentoringReservationId,
         @RequestBody MentoringReservationRequestDTO requestDTO) {
 
-        mentoringService.reservationMentoring(mentoringReservationsId, requestDTO);
+        mentoringService.reservationMentoring(mentoringReservationId, requestDTO);
     }
 
 
-    @GetMapping("/mentoring-reservations/{mentoringReservationsId}")
+    @GetMapping("/mentoring-reservations/{mentoringReservationId}")
     public MentoringReservationDTO getMentoringReservation(
-        @PathVariable UUID mentoringReservationsId) {
+        @PathVariable UUID mentoringReservationId) {
 
-        return mentoringService.getMentoringReservation(mentoringReservationsId);
+        return mentoringService.getMentoringReservation(mentoringReservationId);
     }
 
     @GetMapping("/users/{userId}/mentoring-reservations")

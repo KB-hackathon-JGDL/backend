@@ -17,10 +17,12 @@ public class UserMapper {
             .password(dto.getPassword())
             .userRole(dto.getUserRole())
             .birthDate(dto.getBirthDate())
-            .gender(dto.getGender())
             .phone(dto.getPhone())
             .region(dto.getRegion())
             .info(dto.getInfo())
+            .businessField(dto.getBusinessField())
+            .career(dto.getCareer())
+            .credentials(dto.getCredentials())
             .build();
     }
 
@@ -31,10 +33,12 @@ public class UserMapper {
             .name(entity.getName())
             .userRole(entity.getUserRole())
             .birthDate(entity.getBirthDate())
-            .gender(entity.getGender())
             .phone(entity.getPhone())
             .region(entity.getRegion())
             .info(entity.getInfo())
+            .businessField(entity.getBusinessField())
+            .career(entity.getCareer())
+            .credentials(entity.getCredentials())
             .createdDate(entity.getCreatedDate())
             .build();
     }
