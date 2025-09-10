@@ -1,4 +1,4 @@
-package org.jgdlbe.mentoringReview.entity;
+package org.jgdlbe.mentorReview.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
