@@ -1,10 +1,12 @@
 package org.jgdlbe.user.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.common.exception.BindingErrorException;
+import org.jgdlbe.user.dto.MentorInfoDTO;
 import org.jgdlbe.user.dto.UserCreateDTO;
 import org.jgdlbe.user.dto.UserDTO;
 import org.jgdlbe.user.dto.UserLoginDTO;
@@ -39,4 +41,15 @@ public class UserController {
     public UserDTO getUser(@PathVariable UUID id) {
         return userService.getUser(id);
     }
+
+    @GetMapping("/mentors")
+    public List<MentorInfoDTO> getMentorList() {
+        return userService.getMentorUserList();
+    }
+
+    @GetMapping("/mentors/{userId}")
+    public MentorInfoDTO getMentor(@PathVariable UUID userId) {
+        return userService.getMentor(userId);
+    }
+
 }
