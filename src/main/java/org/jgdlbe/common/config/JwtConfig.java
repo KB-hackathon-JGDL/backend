@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +15,10 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class JwtConfig {
 
-    private String secret = "JGDL-Security-key-please-over-32bytes";
-    private long accessTokenExpiration = 1000L * 60 * 60 * 1000;
+    @Value("${jwt.secret-key}")
+    private String secret;
+    @Value("${jwt.access-token-expiration}")
+    private long accessTokenExpiration;
     private String tokenPrefix = "Bearer ";
     private String headerString = "Authorization";
 

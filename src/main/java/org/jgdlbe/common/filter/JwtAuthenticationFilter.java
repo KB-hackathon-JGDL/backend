@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.common.config.JwtConfig;
 import org.jgdlbe.common.config.JwtTokenProvider;
+import org.jgdlbe.user.domain.CustomUserDetails;
 import org.jgdlbe.user.domain.UserRole;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -58,19 +59,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 권한 설정
                 Collection<GrantedAuthority> authorities = getAuthorities(role);
 
+                CustomUserDetails userDetails = new CustomUserDetails(
+                    userId,
+                    username,
+                    role,
+                    authorities
+                );
+
                 // SecurityContext에 인증 정보 저장
                 UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 // SecurityContext에 인증 객체 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                // 요청에 사용자 정보 추가 (선택사항)
-                request.setAttribute("userId", userId);
-                request.setAttribute("username", username);
-                request.setAttribute("userRole", role);
 
                 log.debug("JWT 인증 성공 - User: {}, Role: {}", username, role);
             }
