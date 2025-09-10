@@ -1,8 +1,8 @@
-package org.jgdlbe.mentoringReview.mapper;
+package org.jgdlbe.mentorReview.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.jgdlbe.mentoringReview.dto.MentorReviewDTO;
-import org.jgdlbe.mentoringReview.entity.MentorReviewEntity;
+import org.jgdlbe.mentorReview.dto.MentorReviewDTO;
+import org.jgdlbe.mentorReview.entity.MentorReviewEntity;
 import org.springframework.stereotype.Component;
 
 @Component

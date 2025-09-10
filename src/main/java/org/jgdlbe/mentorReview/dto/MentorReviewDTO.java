@@ -1,4 +1,4 @@
-package org.jgdlbe.mentoringReview.dto;
+package org.jgdlbe.mentorReview.dto;
 
 import java.util.UUID;
 import lombok.AllArgsConstructor;
