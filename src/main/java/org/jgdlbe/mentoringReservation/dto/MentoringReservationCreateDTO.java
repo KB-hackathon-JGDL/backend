@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class CreateMentoringReservationDTO {
+public class MentoringReservationCreateDTO {
 
     private Integer MentoringTime;
     private LocalDate MentoringDate;

@@ -10,18 +10,14 @@ import org.jgdlbe.mentoringReservation.domain.ChatStatus;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class MentoringReservationDTO {
+@AllArgsConstructor
+public class MentoringReservationUpdateDTO {
 
     private UUID mentoringReservationId;
-
-    private UUID mentorUserId;
     private UUID menteeUserId;
 
     private Integer MentoringTime;
     private LocalDate MentoringDate;
-    private String consultationCard;
     private ChatStatus chatStatus;
-
 }
