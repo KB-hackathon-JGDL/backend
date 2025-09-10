@@ -20,6 +20,9 @@ public class UserMapper {
             .phone(dto.getPhone())
             .region(dto.getRegion())
             .info(dto.getInfo())
+            .businessField(dto.getBusinessField())
+            .career(dto.getCareer())
+            .credentials(dto.getCredentials())
             .build();
     }
 
@@ -33,6 +36,9 @@ public class UserMapper {
             .phone(entity.getPhone())
             .region(entity.getRegion())
             .info(entity.getInfo())
+            .businessField(entity.getBusinessField())
+            .career(entity.getCareer())
+            .credentials(entity.getCredentials())
             .createdDate(entity.getCreatedDate())
             .build();
     }
