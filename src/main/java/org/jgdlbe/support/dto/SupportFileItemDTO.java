@@ -1,0 +1,13 @@
+package org.jgdlbe.support.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SupportFileItemDTO {
+    private String originName;
+    private String fileType;
+}
