@@ -1,6 +1,5 @@
 package org.jgdlbe.support.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.jgdlbe.support.dto.SupportDetailDTO;
 import org.jgdlbe.support.dto.SupportSummaryDTO;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/support")
+@RequestMapping("/api/support")
 public class SupportController {
 
     private final SupportProgramBoardRepository boardRepo;

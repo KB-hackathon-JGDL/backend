@@ -15,8 +15,10 @@ CREATE TABLE IF NOT EXISTS support_program_board
 
 CREATE TABLE IF NOT EXISTS support_program_file
 (
-    file_id                  BINARY(16) NOT NULL,
-    support_program_board_id BINARY(16) NOT NULL,
+    file_id                  BINARY(16)   NOT NULL,
+    support_program_board_id BINARY(16)   NOT NULL,
+    origin_name              VARCHAR(255) NOT NULL,
+    file_type                VARCHAR(255) NOT NULL,
     PRIMARY KEY (file_id),
     INDEX idx_spf_board (support_program_board_id),
     CONSTRAINT fk_spf_board
@@ -26,27 +28,12 @@ CREATE TABLE IF NOT EXISTS support_program_file
             ON UPDATE RESTRICT
 );
 
-CREATE TABLE IF NOT EXISTS file_list
-(
-    file_list_id BINARY(16)   NOT NULL,
-    file_id      BINARY(16)   NOT NULL,
-    origin_name  VARCHAR(255) NOT NULL,
-    file_type    VARCHAR(255) NOT NULL,
-    PRIMARY KEY (file_list_id),
-    INDEX idx_fl_file (file_id),
-    CONSTRAINT fk_fl_file
-        FOREIGN KEY (file_id)
-            REFERENCES support_program_file (file_id)
-            ON DELETE CASCADE
-            ON UPDATE RESTRICT
-);
-
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
                                    article_organization, article_target, article_content, article_contact, article_etc)
 VALUES (@board_id,
-        '가배도와 함께하는 함께 서기 프로젝트 참여자 모집',
+        '가배도와 함께하는 ''함께 서기'' 프로젝트 참여자 모집',
         '서울',
         '2025-08-28',
         '2025-09-18',
@@ -56,10 +43,8 @@ VALUES (@board_id,
         'banghwa2@gnk.or.kr / 팩스 / 02-2662-6661',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -75,20 +60,23 @@ VALUES (@board_id,
         'cnjarip21@naver.com / 041-541-6553',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개인정보수집이용동의서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '추천서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '통장사본(긴급생계비 신청자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '교육비활용계획서(교육비신청자)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개인정보수집이용동의서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '추천서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '통장사본(긴급생계비 신청자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '교육비활용계획서(교육비신청자)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -104,16 +92,17 @@ VALUES (@board_id,
         'geoid2021@naver.com',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주민등록초본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호연장확인서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주민등록초본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호연장확인서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -129,10 +118,8 @@ VALUES (@board_id,
         'https://www.woorichancekit.com/',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -148,10 +135,8 @@ VALUES (@board_id,
         'https://forms.gle/7tjPgQdQGZiJ15Uj6 / 041-541-6553',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -167,20 +152,23 @@ VALUES (@board_id,
         'aloysius0801@withjoy.or.kr / https://withjoy.or.kr/notice',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '재원사실확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '재직증명서(해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '재학증명서(해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주택계약서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '재원사실확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '재직증명서(해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '재학증명서(해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주택계약서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -196,10 +184,8 @@ VALUES (@board_id,
         'https://jarip-hope.or.kr/residence/02.php / 043-267-5550',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -215,18 +201,20 @@ VALUES (@board_id,
         '02-2280-3372 / https://www.bss.or.kr/business-apply/9991/',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '사업신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주민등록등본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신분증 사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '대출용도 증빙서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '사업신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주민등록등본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신분증 사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '대출용도 증빙서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -242,26 +230,32 @@ VALUES (@board_id,
         NULL,
         '사회적기업·소셜벤처 고용 유지 필요');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개인정보이용동의서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주민등록등본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주거지 임대차계약서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신분증 사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '통장 사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '소득금액증명원', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '해당자제출서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개인정보이용동의서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주민등록등본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주거지 임대차계약서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신분증 사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '통장 사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '소득금액증명원', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '해당자제출서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -277,10 +271,8 @@ VALUES (@board_id,
         '070-8820-0647',
         NULL);
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -296,10 +288,8 @@ VALUES (@board_id,
         'https://gwon.net/2025_bfyouth3',
         '신청방법: 온라인 신청서 작성 및 서류 제출(포스터 QR 또는 링크)');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -315,10 +305,8 @@ VALUES (@board_id,
         'gwjeong@dudc.or.kr',
         '문의처 : 대구도시개발공사 주거복지처처 청년 매입임대 담당(☎ 053-350-0293)');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -334,10 +322,8 @@ VALUES (@board_id,
         'gwjeong@dudc.or.kr',
         '상담 희망 내용 및 가능시간 확인 후 매칭 , 개별 연락 및 내방 상담');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개별연락', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개별연락', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -353,16 +339,17 @@ VALUES (@board_id,
         '053-426-1939 / dgyc1939@daum.net',
         '접수방법: 온라인 / 결과발표일: 2025-11-30 / 24년도 참여자 재참여 가능 / 예산 소진 시 조기마감');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(구글폼)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '통장사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신분증 사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '면접 증빙서류 (면접 확인서, 확인 문자, 확인 메일, 기타 증빙)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(구글폼)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '통장사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신분증 사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '면접 증빙서류 (면접 확인서, 확인 문자, 확인 메일, 기타 증빙)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -378,12 +365,11 @@ VALUES (@board_id,
         '온라인 접수 또는 saintpain47@naver.com',
         '근무조건: 정규직(수습 3개월), 주5일(08:30~18:00), 경기 안양시 동안구 전파로 104번길 70. 복지: 연차, 휴가, 상여금, 퇴직연금, 4대보험, 자격증 수당, 단체상해보험, 각종 선물·지원. 전형절차: 서류전형 → 1차면접 → 2차면접 → 최종합격');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서(첨부파일 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 증빙서류(자격증 사본 등)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서(첨부파일 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 증빙서류(자격증 사본 등)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -399,14 +385,14 @@ VALUES (@board_id,
         '김민선 담당자 (kms@bi-cns.com / 02-6952-8164)',
         '교육 및 면접 장소: 서울 영등포구 (선유도역 인근) (주)범익 서울 사업장. 신청방법: 포스터 QR설문 작성(https://bit.ly/44J2BpL). 프로그램 세부정보: https://m.site.naver.com/1NgED. 유의사항: 취업 연계 목적, 허위 서류 제출 시 불이익, 모집 일정은 내부 사정에 따라 변경될 수 있음.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '최종합격자 추가 제출서류(추후 안내)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '최종합격자 추가 제출서류(추후 안내)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -422,14 +408,14 @@ VALUES (@board_id,
         '온라인 접수 (개별연락)',
         '근무조건: 정규직, 주5일, 경기도 파주시 조리읍 팔학골길 141. 우대사항: 전기/전자공학 전공, CNC선반기능사, 관련자격증 소지, 직무경험, CAD/CAM 능숙자. 자립준비청년 우선채용.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자격증 사본(해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 증빙서류(경력증명 등)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자격증 사본(해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 증빙서류(경력증명 등)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -445,12 +431,11 @@ VALUES (@board_id,
         '채용담당자 최영찬 차장 (010-3765-7986)',
         '채용절차: 1차 서류심사(자기소개서·이력서) → 2차 1:1 면접 → 합격통보');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -466,14 +451,14 @@ VALUES (@board_id,
         '031-595-6304 / 경기도 남양주시 사릉로 14, 4층(금곡프라자) / 인스타그램 @young._.dream',
         '교육장소: 남양주시 청년창업센터, 사회적경제지원센터, 다산 정약용도서관. 신청방법: 고용24 홈페이지 ''청년도전지원사업'' 검색 후 신청. 모집 일정: 상시 선착순, 중기 3기(7/2~10/31), 단기(9/16~11/4).');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(고용24 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 기관 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(고용24 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 기관 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -489,14 +474,14 @@ VALUES (@board_id,
         '신청서: https://forms.gle/MXUziLfZxoq4Lhaj9 / 카카오톡 플러스친구: sdmyouth / 인스타그램: @sdm_youthchallenge',
         '진행장소: 서대문구 경기대로 79, B1층 엘앤씨타운. 프로그램 일정: 중기 15주 과정(5월~8월), 주1회 10:00~18:00. 모집 인원 초과 시 조기 마감. 신청방법: 구글 신청서 제출 및 고용24 로그인 후 기관 선택.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(구글폼)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '고용24 신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 기관 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(구글폼)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '고용24 신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 기관 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -512,14 +497,14 @@ VALUES (@board_id,
         '주소: 서울 송파구 위례성대로16길 4-17 3층(방이동) / 팩스: 02-2202-0905 / 이메일: ktree1976@daum.net / 문의: 인사담당자 이용규 부장 (010-5226-7696, 02-2202-0900~4)',
         '신청방법: 우편, 팩스, 이메일, 방문 접수 가능. 지방출장 시 회사에서 비용 전액 부담.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 회사 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 회사 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -535,16 +520,17 @@ VALUES (@board_id,
         '온라인 신청: https://flagup.kr/application/list.php / 모집 공고: flagup.kr, 자립정보ON',
         '사업일정: 창업교육(5~9월, 해외 탐방 포함), 창작교육(8~11월), 취업연계(5~12월, 인턴십 연 2회). 주요혜택: 교육수당(월 60만원), 자격증 취득 지원(Adobe CP, ITQ OA Master), 인턴십 지원금(월 최대 250만원).');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(온라인 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서(해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '학생증 또는 재학증명서(보호대상아동 해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 기관 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(온라인 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서(해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '학생증 또는 재학증명서(보호대상아동 해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 기관 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -560,14 +546,14 @@ VALUES (@board_id,
         '이메일: lush_recruit@lush.co.kr (제목: [자립] 주간 현장 업무 지원_이름)',
         '근무형태: 계약직(3개월) 후 정규직 전환 가능. 근무지: 충북 진천군 덕산읍 신척산단4로 93. 근무요일: 주5일(월~금). 급여: 면접 후 개별 연락.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서 또는 보호확인서 또는 재원증명서 (택1)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서 또는 보호확인서 또는 재원증명서 (택1)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -583,14 +569,14 @@ VALUES (@board_id,
         '채용 홈페이지: https://kotsa.career.co.kr / 문의: 채용콜센터(02-2006-6122), 인재개발처(054-459-7199, 7197)',
         '결과 발표일: 2025-10-01. 결과 확인: 채용 홈페이지 참조.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '지원서(온라인 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자격증 및 경력증빙서류(해당자)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 공단 요구 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '지원서(온라인 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자격증 및 경력증빙서류(해당자)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 공단 요구 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -606,16 +592,17 @@ VALUES (@board_id,
         '개별 연락 예정',
         '서류합격자 발표: 2025-09-22, 면접심사: 2025-09-28~09-29(오프라인), 최종합격자 발표: 2025-10-02.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신청서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개인정보동의서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료(예정) 확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 기관 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신청서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개인정보동의서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료(예정) 확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 기관 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -631,14 +618,14 @@ VALUES (@board_id,
         '운영사무국 010-5695-3056 / 카카오톡 @청년인생설계학교 / 신청: https://youth.seoul.go.kr',
         '진행장소: 서울광역청년센터, 중랑 청년청 등. 결과발표일: 2025-09-19, 개별 안내 및 청년몽땅정보통 공지사항.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(온라인 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개인정보 동의서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 운영사무국 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(온라인 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개인정보 동의서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 운영사무국 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -654,16 +641,17 @@ VALUES (@board_id,
         '홈페이지: https://kgs.applyin.co.kr',
         '접수기간: 2025-09-08 14:00 ~ 2025-09-16 14:00. 결과발표일: 2025-12-10, 공사 홈페이지에서 개별 확인. 지원분야별 중복지원 불가.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '지원서(온라인 작성)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '증빙서류(자격증, 경력증명서 등)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자립준비청년 확인서(해당자)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '지원서(온라인 작성)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '증빙서류(자격증, 경력증명서 등)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자립준비청년 확인서(해당자)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -679,10 +667,8 @@ VALUES (@board_id,
         '담당: 인혜령 주임 (070-8833-7687) / 신청링크: https://forms.gle/sPXEJDievUkjV87F9',
         '일정: 2025-09-23(화) 16:00~18:30. 인원: 10명 이내. 장소: 서울자립지원전담기관 교육장. 결과 발표일: 2025-09-17, 개별 연락.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(구글폼)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(구글폼)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -698,14 +684,14 @@ VALUES (@board_id,
         '-',
         '계약기간 약 6개월(25.10.27-26.4.24) , 보수 월 2,236,270원 , 근무 평가를 통해 1회에 한하여 3개월 근로계약 연장 가능');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '응시지원서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '개인정보 수집 이용 동의서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '응시지원서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '개인정보 수집 이용 동의서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -721,14 +707,14 @@ VALUES (@board_id,
         '온라인: www.sitedu.or.kr / 방문: 강동구 고덕로 183 / 문의: 02-440-5500',
         '상시 모집(추가모집). 결과발표 상시, 개별 연락.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(온라인 양식)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주민등록등본 또는 외국인등록증', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 기관 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(온라인 양식)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주민등록등본 또는 외국인등록증', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 기관 요청 서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -744,16 +730,17 @@ VALUES (@board_id,
         '신청링크: https://www.dunamunextseries.or.kr/job/job5_1',
         '결과 발표일: 2025-09-22, 개별 안내 예정. 지원요건: 오리엔테이션 및 온보딩교육 전 일정 참여 가능, 인턴십 기간 성실 수행 가능.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '이력서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '자기소개서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '보호종료확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '쉼터 보호확인서', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '이력서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '자기소개서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '쉼터 보호확인서', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -769,10 +756,8 @@ VALUES (@board_id,
         '문의: 한국정보보호교육센터 (T. 02-921-1466 / 카카오채널 ''한국정보보호교육센터'')',
         '교육비 전액 지원. 수료 시 2026년 K-shield 주니어 선발 및 AI 보안관제 전문인력 양성과정(오프라인) 선발 시 가산점 부여. 결과 확인: 신청 시 사용한 메일 주소로 개별 발송.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(온라인 접수)', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(온라인 접수)', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
@@ -788,13 +773,14 @@ VALUES (@board_id,
         '전화: 041-900-2031 / 방문: 천안시 동남구 은행길5-4, 천안청년몰 흥흥발전소 B1 청년도전지원팀 / 카카오톡: 천안청년센터 이음 채널',
         '접수방법: 고용24 온라인 신청(https://www.work24.go.kr/cm/main.do), 구글폼(https://forms.gle/XaXn931zpeBsoyia7), 방문 접수 가능. 결과발표: 상시 개별 연락. 유의사항: 신청정보 부정확 시 취소 가능, 참여 시 유사 사업 6개월간 제한.');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
-INSERT INTO support_program_file (file_id, support_program_board_id)
-VALUES (@file_id, @board_id);
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '참여신청서(온라인·구글폼)', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '신분증 사본', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '주민등록등본 또는 거주확인서', '문서');
-INSERT INTO file_list (file_list_id, file_id, origin_name, file_type)
-VALUES (UNHEX(REPLACE(UUID(), '-', '')), @file_id, '기타 센터 요청 서류', '문서');
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '참여신청서(온라인·구글폼)', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '신분증 사본', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '주민등록등본 또는 거주확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '기타 센터 요청 서류', '문서');

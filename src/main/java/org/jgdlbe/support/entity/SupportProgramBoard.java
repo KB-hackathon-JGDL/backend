@@ -1,25 +1,17 @@
 package org.jgdlbe.support.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
-
+import lombok.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "support_program_board")
 public class SupportProgramBoard {
+
     @Id
-    @GeneratedValue
-    @UuidGenerator
     @Column(name = "support_program_board_id", columnDefinition = "BINARY(16)")
     private UUID id;
 
