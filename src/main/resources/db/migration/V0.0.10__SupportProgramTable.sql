@@ -46,7 +46,7 @@ SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
                                    article_organization, article_target, article_content, article_contact, article_etc)
 VALUES (@board_id,
-        '가배도와 함께하는 ''함께 서기'' 프로젝트 참여자 모집',
+        '가배도와 함께하는 함께 서기 프로젝트 참여자 모집',
         '서울',
         '2025-08-28',
         '2025-09-18',
