@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jgdlbe.common.config.JwtTokenProvider;
 import org.jgdlbe.common.exception.DataNotFoundException;
 import org.jgdlbe.common.exception.ErrorCode;
 import org.jgdlbe.common.exception.InvalidRequestException;
@@ -37,6 +38,8 @@ public class UserService {
 
     private final PasswordEncoder encoder;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     public UserDTO createUser(UserCreateDTO createDTO) {
         if (userRepository.findByUsername(createDTO.getUsername()).isPresent()) {
             throw new InvalidRequestException(ErrorCode.USER_IS_EXISTED);
@@ -65,9 +68,11 @@ public class UserService {
             throw new InvalidRequestException(ErrorCode.INVALID_USERNAME_OR_PASSWORD);
         }
 
+        UserDTO user = userMapper.toDTO(loginUser);
+        user.setAccessKey(jwtTokenProvider.generateAccessToken(loginUser));
         // TODO jwt 토큰 반환
 
-        return userMapper.toDTO(loginUser);
+        return user;
     }
 
     public UserDTO getUser(UUID userId) {
