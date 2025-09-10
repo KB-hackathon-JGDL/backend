@@ -12,7 +12,7 @@ class SavingIngestServiceTest {
 
     @Test
     void productSave() {
-        var result = service.ingest(null); // application.yml의 topFinGrpNo(020000) 사용
+        var result = service.ingest(null);
         System.out.printf("ingest result => products=%d, rates=%d%n",
                 result.products(), result.rates());
     }

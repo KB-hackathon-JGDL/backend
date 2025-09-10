@@ -1,24 +1,32 @@
+// src/main/java/org/jgdlbe/product/domain/ProfileVectors.java
 package org.jgdlbe.product.domain;
 
-import java.util.EnumMap;
 import java.util.Map;
 
-public class ProfileVectors {
+public final class ProfileVectors {
 
-    private static final Map<ProfileType, double[]> MAP = new EnumMap<>(ProfileType.class);
+    private ProfileVectors() {}
 
-    static {
-        MAP.put(ProfileType.GUARDIAN,      new double[]{0.2, 0.2, 0.8, 0.2});
-        MAP.put(ProfileType.PRACTICAL,     new double[]{0.3, 0.2, 0.3, 0.3});
-        MAP.put(ProfileType.PLANNER,       new double[]{0.4, 0.6, 0.8, 0.7});
-        MAP.put(ProfileType.ADVENTURER,    new double[]{0.5, 0.6, 0.3, 0.7});
-        MAP.put(ProfileType.STRATEGIST,    new double[]{0.7, 0.3, 0.8, 0.4});
-        MAP.put(ProfileType.TRENDSETTER,   new double[]{0.8, 0.3, 0.3, 0.6});
-        MAP.put(ProfileType.TRAVEL_MASTER, new double[]{0.7, 0.8, 0.8, 0.4});
-        MAP.put(ProfileType.ENERGIZER,     new double[]{0.9, 0.9, 0.3, 0.8});
-    }
+    /**
+     * 벡터 순서: [안정성, 계획성, 규칙성, 단기성]
+     * 표의 최신 점수를 그대로 반영했습니다.
+     *
+     * enum 이름은 프로젝트에 맞게 교체하세요.
+     * (예시는 영문 상수: STABLE_MANAGER, REALISTIC_PLANNER, FREE_EXPLORER, SMART_INVESTOR,
+     *  RELAXED_ADVENTURER, YOLO, PRACTICAL, SELF_MADE_VISIONARY)
+     */
+    private static final Map<ProfileType, double[]> VECTORS = Map.of(
+            ProfileType.STABLE_MANAGER,       new double[]{2.8, 2.8, 2.8, 1.2}, // 1. 안정적인 관리자
+            ProfileType.REALISTIC_PLANNER,    new double[]{2.6, 2.7, 2.7, 2.7}, // 2. 현실적인 계획가
+            ProfileType.FREE_EXPLORER,        new double[]{1.3, 1.3, 1.3, 2.8}, // 3. 자유로운 탐험가
+            ProfileType.SMART_INVESTOR,       new double[]{1.2, 2.6, 2.6, 1.1}, // 4. 스마트한 투자자
+            ProfileType.RELAXED_ADVENTURER,   new double[]{2.7, 1.4, 1.4, 1.4}, // 5. 느긋한 모험가
+            ProfileType.YOLO,                 new double[]{1.4, 1.2, 1.2, 2.9}, // 6. 현재를 즐기는 욜로족
+            ProfileType.PRACTICAL,            new double[]{2.6, 2.7, 1.3, 2.8}, // 7. 실용적 준비자
+            ProfileType.SELF_MADE_VISIONARY,  new double[]{1.1, 2.8, 2.7, 1.1}  // 8. 비전 있는 자수성가형
+    );
 
     public static Map<ProfileType, double[]> all() {
-        return MAP;
+        return VECTORS;
     }
 }

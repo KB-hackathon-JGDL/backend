@@ -289,7 +289,13 @@ VALUES (@board_id,
         '신청방법: 온라인 신청서 작성 및 서류 제출(포스터 QR 또는 링크)');
 SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
-VALUES (@file_id, @board_id, '신청서', '문서');
+VALUES (@file_id, @board_id, '생활안정지원금', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '보호종료확인서', '문서');
+SET @file_id = UNHEX(REPLACE(UUID(), '-', ''));
+INSERT INTO support_program_file (file_id, support_program_board_id, origin_name, file_type)
+VALUES (@file_id, @board_id, '저소득/기준 중위소득 확인서류', '문서');
 
 SET @board_id = UNHEX(REPLACE(UUID(), '-', ''));
 INSERT INTO support_program_board (support_program_board_id, title, region, start_date, end_date,
