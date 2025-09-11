@@ -1,5 +1,6 @@
 package org.jgdlbe.mentoringReservation.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,10 @@ public class MentoringReservationDTO {
     private UUID mentorUserId;
     private UUID menteeUserId;
 
-    private Integer MentoringTime;
-    private LocalDate MentoringDate;
+    private Integer mentoringTime;
+    private LocalDate mentoringDate;
     private String consultationCard;
     private ChatStatus chatStatus;
 
+    private String name;
 }
