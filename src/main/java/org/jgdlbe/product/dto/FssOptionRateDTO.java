@@ -16,7 +16,7 @@ public class FssOptionRateDTO {
     @JsonProperty("intr_rate_type_nm")
     private String intrRateTypeNm;
     @JsonProperty("save_trm")
-    private Short  saveTrm;
+    private Short saveTrm;
     @JsonProperty("intr_rate")
     private BigDecimal intrRate;
     @JsonProperty("intr_rate2")

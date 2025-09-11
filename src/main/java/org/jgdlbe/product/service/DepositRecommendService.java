@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +59,13 @@ public class DepositRecommendService {
                 .build();
     }
 
-    /** POST 응답용 내부 DTO */
+    @Transactional(readOnly = true)
+    public DepositProductDTO getDepositById(UUID productId) {
+        DepositProduct product = depositRepo.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예금 상품"));
+        return DepositProductMapper.toDto(product);
+    }
+
     public record SavedProfileResult(ProfileType profileType, String profileLabel) {}
 
 }

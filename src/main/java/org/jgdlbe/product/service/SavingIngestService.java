@@ -85,7 +85,6 @@ public class SavingIngestService {
 
                     product = productRepo.save(product);
 
-                    // 금리 전체 교체 후 다시 저장
                     rateRepo.deleteByProduct(product);
                     List<FssOptionRateDTO> options = optMap.get(bp.getFinPrdtCd());
                     if (options != null) {
