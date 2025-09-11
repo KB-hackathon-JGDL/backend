@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.jgdlbe.chat.dto.ChatMessageDTO;
 import org.jgdlbe.chat.service.ChatLogService;
 import org.jgdlbe.common.domain.ChatType;
+import org.jgdlbe.mentoringReservation.domain.ChatStatus;
+import org.jgdlbe.mentoringReservation.dto.MentoringReservationUpdateDTO;
+import org.jgdlbe.mentoringReservation.service.MentoringReservationService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -27,6 +30,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     private final ObjectMapper mapper;
 
     private final ChatLogService chatLogService;
+    private final MentoringReservationService mentoringReservationService;
 
     // 방ID -> 방에 있는 세션 1~2명
     private final Map<UUID, Set<WebSocketSession>> chatRoomSessions = new ConcurrentHashMap<>();
@@ -38,8 +42,10 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        ChatMessageDTO chatMessageDTO = mapper.readValue(message.getPayload(), ChatMessageDTO.class);
+    protected void handleTextMessage(WebSocketSession session, TextMessage message)
+        throws Exception {
+        ChatMessageDTO chatMessageDTO = mapper.readValue(message.getPayload(),
+            ChatMessageDTO.class);
         UUID roomId = chatMessageDTO.getMentoringReservationId();
 
         // 방에 세션 등록
@@ -48,6 +54,10 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         // 메시지 타입별 처리
         chatMessageDTO.setCreatedDate(LocalDateTime.now());
         String msgJson = mapper.writeValueAsString(chatMessageDTO);
+
+        MentoringReservationUpdateDTO updateDTO = MentoringReservationUpdateDTO.builder()
+            .mentoringReservationId(chatMessageDTO.getMentoringReservationId())
+            .build();
 
         switch (chatMessageDTO.getChatType()) {
             case TALK:
@@ -58,12 +68,16 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
             case JOIN:
                 chatMessageDTO.setMessage("상대가 입장했습니다.");
+                updateDTO.setChatStatus(ChatStatus.ACTIVE);
+                mentoringReservationService.updateMentoringReservationChatStatus(updateDTO);
                 chatLogService.createChatLog(chatMessageDTO);
                 broadcastToRoom(roomId, mapper.writeValueAsString(chatMessageDTO));
                 break;
 
             case LEAVE:
                 chatMessageDTO.setMessage("상대가 퇴장했습니다.");
+                updateDTO.setChatStatus(ChatStatus.COMPLETED);
+                mentoringReservationService.updateMentoringReservationChatStatus(updateDTO);
                 chatLogService.createChatLog(chatMessageDTO);
                 broadcastToRoom(roomId, mapper.writeValueAsString(chatMessageDTO));
                 // 자기 세션 제거
@@ -73,7 +87,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)
+        throws Exception {
         // 종료된 세션이 속한 방 찾기
         chatRoomSessions.forEach((roomId, sessions) -> {
             if (sessions.remove(session)) {
@@ -90,7 +105,9 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
                         String msgJson = mapper.writeValueAsString(msg);
                         sessions.forEach(s -> {
                             try {
-                                if (s.isOpen()) s.sendMessage(new TextMessage(msgJson));
+                                if (s.isOpen()) {
+                                    s.sendMessage(new TextMessage(msgJson));
+                                }
                             } catch (Exception e) {
                                 log.error("종료 메시지 전송 실패", e);
                             }
@@ -107,7 +124,9 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         chatRoomSessions.getOrDefault(roomId, Set.of())
             .forEach(s -> {
                 try {
-                    if (s.isOpen()) s.sendMessage(new TextMessage(msgJson));
+                    if (s.isOpen()) {
+                        s.sendMessage(new TextMessage(msgJson));
+                    }
                 } catch (Exception e) {
                     log.error("메시지 전송 실패", e);
                 }

@@ -2,6 +2,8 @@ package org.jgdlbe.mentoringReservation.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -12,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.jgdlbe.mentoringReservation.domain.ChatStatus;
 
 @Entity
 @Data
@@ -33,4 +36,6 @@ public class MentoringReservationEntity {
     private Integer MentoringTime;
     private LocalDate MentoringDate;
     private String consultationCard;
+    @Enumerated(EnumType.STRING)
+    private ChatStatus chatStatus;
 }

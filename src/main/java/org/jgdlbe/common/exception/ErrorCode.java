@@ -36,6 +36,8 @@ public class ErrorCode {
         "아이디 또는 패스워드가 일치하지 않습니다.");
     public final static ErrorCode USER_ALREADY_DELETED = new ErrorCode(
         "USER.ERROR.USER_ALREADY.DELETED");
+    public final static ErrorCode USER_IS_NOT_MENTOR = new ErrorCode(
+        "멘토가 아닙니다.");
 
     /* MENTORING RESERVATION */
     public final static ErrorCode NOT_FOUND_MENTORING_RESERVATION = new ErrorCode(
