@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/support")
+@RequestMapping("/api/supports")
 public class SupportController {
 
     private final SupportProgramBoardRepository boardRepo;
@@ -25,13 +25,8 @@ public class SupportController {
         return boardRepo.findAllSummaries();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> getSupportDetail(@PathVariable("id") UUID id) {
-        try {
-            SupportDetailDTO dto = supportService.getDetailWithFiles(id);
-            return ResponseEntity.ok(dto);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}")
+    public SupportDetailDTO getSupportDetail(@PathVariable("id") UUID id) {
+        return supportService.getDetailWithFiles(id);
     }
 }
