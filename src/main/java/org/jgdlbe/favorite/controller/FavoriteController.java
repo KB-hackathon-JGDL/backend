@@ -2,9 +2,9 @@ package org.jgdlbe.favorite.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.jgdlbe.favorite.service.FavoriteService;
-import org.jgdlbe.product.entity.CardInfo;
-import org.jgdlbe.product.entity.DepositProduct;
-import org.jgdlbe.support.entity.SupportProgramBoard;
+import org.jgdlbe.product.dto.CardSummaryDto;
+import org.jgdlbe.product.dto.DepositProductDTO;
+import org.jgdlbe.support.dto.SupportSummaryDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -68,23 +68,23 @@ public class FavoriteController {
     }
 
     @GetMapping("/card")
-    public ResponseEntity<List<CardInfo>> getCardFavorites(Authentication authentication) {
+    public ResponseEntity<List<CardSummaryDto>> getCardFavorites(Authentication authentication) {
         String username = authentication.getName();
-        var res = favoriteService.getCardFavorites(username);
-        return ResponseEntity.ok(res);
+        List<CardSummaryDto> favorites = favoriteService.getCardFavorites(username);
+        return ResponseEntity.ok(favorites);
     }
 
     @GetMapping("/deposit")
-    public ResponseEntity<List<DepositProduct>> getDepositFavorites(Authentication authentication) {
+    public ResponseEntity<List<DepositProductDTO>> getDepositFavorites(Authentication authentication) {
         String username = authentication.getName();
-        var res = favoriteService.getDepositFavorites(username);
-        return ResponseEntity.ok(res);
+        List<DepositProductDTO> favorites = favoriteService.getDepositFavorites(username);
+        return ResponseEntity.ok(favorites);
     }
 
     @GetMapping("/supply")
-    public ResponseEntity<List<SupportProgramBoard>> getSupplyFavorites(Authentication authentication) {
+    public ResponseEntity<List<SupportSummaryDTO>> getSupplyFavorites(Authentication authentication) {
         String username = authentication.getName();
-        var res = favoriteService.getSupplyFavorites(username);
-        return ResponseEntity.ok(res);
+        List<SupportSummaryDTO> favorites = favoriteService.getSupplyFavorites(username);
+        return ResponseEntity.ok(favorites);
     }
 }
