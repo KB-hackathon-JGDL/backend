@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/recommend")
+@RequestMapping("/api/recommends")
 @RequiredArgsConstructor
 public class RecommendController {
 
@@ -29,28 +29,28 @@ public class RecommendController {
         );
     }
 
-    @GetMapping("/deposit")
+    @GetMapping("/deposit-products")
     public ResponseEntity<RecommendResponse> recommendDeposits(Authentication authentication) {
         String username = authentication.getName();
         var response = appService.recommendDepositsBySavedProfile(username);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/deposit/{uuid}")
-    public ResponseEntity<DepositProductDTO> getDepositById(@PathVariable("uuid") UUID productId) {
+    @GetMapping("/deposit-products/{productId}")
+    public ResponseEntity<DepositProductDTO> getDepositById(@PathVariable("productId") UUID productId) {
         DepositProductDTO dto = appService.getDepositById(productId);
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/card")
+    @GetMapping("/cards")
     public ResponseEntity<RecommendCardResponse> recommendCards(Authentication authentication) {
         String username = authentication.getName();
         RecommendCardResponse response = cardService.recommendCardsBySavedProfile(username);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/card/{uuid}")
-    public ResponseEntity<CardSummaryDto> getCardById(@PathVariable("uuid") UUID cardId) {
+    @GetMapping("/cards/{cardId}")
+    public ResponseEntity<CardSummaryDto> getCardById(@PathVariable("cardId") UUID cardId) {
         CardSummaryDto dto = cardService.getCardById(cardId);
         return ResponseEntity.ok(dto);
     }
