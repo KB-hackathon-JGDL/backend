@@ -19,6 +19,7 @@ import org.jgdlbe.mentoringReservation.repository.MentoringReservationRepository
 import org.jgdlbe.user.domain.UserRole;
 import org.jgdlbe.user.dto.UserDTO;
 import org.jgdlbe.user.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +40,8 @@ public class MentoringReservationService {
         for (MentoringReservationCreateDTO dto : reservationDTOList) {
             reservationRepository.save(MentoringReservationEntity.builder()
                 .mentorUserId(mentorId)
-                .MentoringTime(dto.getMentoringTime())
-                .MentoringDate(dto.getMentoringDate())
+                .mentoringTime(dto.getMentoringTime())
+                .mentoringDate(dto.getMentoringDate())
                 .chatStatus(ChatStatus.PENDING)
                 .build());
         }
@@ -71,7 +72,7 @@ public class MentoringReservationService {
         return mapper.toDTO(entity);
     }
 
-    public List<MentoringReservationDTO> getReservationList(UUID userId) {
+    public Page<MentoringReservationDTO> getReservationList(UUID userId) {
 
         UserDTO user = userService.getUser(userId);
 
@@ -83,8 +84,7 @@ public class MentoringReservationService {
             filter.setMenteeUserId(userId);
         }
 
-        return reservationRepository.findByFilter(filter, filter.getPageRequest()).stream()
-            .map(mapper::toDTO).toList();
+        return reservationRepository.findByFilter(filter, filter.getPageRequest());
     }
 
     public void updateMentoringReservationChatStatus(

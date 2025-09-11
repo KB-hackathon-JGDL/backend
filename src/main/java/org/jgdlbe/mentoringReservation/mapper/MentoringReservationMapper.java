@@ -12,8 +12,8 @@ public class MentoringReservationMapper {
             .mentoringReservationId(entity.getMentoringReservationId())
             .mentorUserId(entity.getMentorUserId())
             .menteeUserId(entity.getMenteeUserId())
-            .MentoringTime(entity.getMentoringTime())
-            .MentoringDate(entity.getMentoringDate())
+            .mentoringTime(entity.getMentoringTime())
+            .mentoringDate(entity.getMentoringDate())
             .consultationCard(entity.getConsultationCard())
             .chatStatus(entity.getChatStatus())
             .build();

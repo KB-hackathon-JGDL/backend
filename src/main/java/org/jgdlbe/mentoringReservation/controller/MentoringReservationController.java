@@ -9,6 +9,7 @@ import org.jgdlbe.mentoringReservation.dto.MentoringReservationCreateDTO;
 import org.jgdlbe.mentoringReservation.dto.MentoringReservationDTO;
 import org.jgdlbe.mentoringReservation.dto.MentoringReservationRequestDTO;
 import org.jgdlbe.mentoringReservation.service.MentoringReservationService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +53,7 @@ public class MentoringReservationController {
     }
 
     @GetMapping("/mentoring-reservations")
-    public List<MentoringReservationDTO> getReservationList() {
+    public Page<MentoringReservationDTO> getReservationList() {
 
         return mentoringService.getReservationList(AuthUtils.getUserId());
     }

@@ -33,8 +33,8 @@ public class MentoringReservationEntity {
     private UUID mentorUserId;
     private UUID menteeUserId;
 
-    private Integer MentoringTime;
-    private LocalDate MentoringDate;
+    private Integer mentoringTime;
+    private LocalDate mentoringDate;
     private String consultationCard;
     @Enumerated(EnumType.STRING)
     private ChatStatus chatStatus;

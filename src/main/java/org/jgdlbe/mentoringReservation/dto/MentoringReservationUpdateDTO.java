@@ -17,7 +17,7 @@ public class MentoringReservationUpdateDTO {
     private UUID mentoringReservationId;
     private UUID menteeUserId;
 
-    private Integer MentoringTime;
-    private LocalDate MentoringDate;
+    private Integer mentoringTime;
+    private LocalDate mentoringDate;
     private ChatStatus chatStatus;
 }
