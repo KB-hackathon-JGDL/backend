@@ -85,13 +85,14 @@ public class SavingIngestService {
 
                     product = productRepo.save(product);
 
-                    // 금리 전체 교체 후 다시 저장
                     rateRepo.deleteByProduct(product);
                     List<FssOptionRateDTO> options = optMap.get(bp.getFinPrdtCd());
                     if (options != null) {
                         for (FssOptionRateDTO op : options) {
                             DepositRate rate = DepositRate.builder()
                                     .product(product)
+                                    .rsrvType(op.getRsrvType() == null ? "NA" : op.getRsrvType())
+                                    .rsrvTypeNm(op.getRsrvTypeNm())
                                     .intRateType(op.getIntrRateType())
                                     .intrRateTypeNm(op.getIntrRateTypeNm())
                                     .saveTrm(op.getSaveTrm())

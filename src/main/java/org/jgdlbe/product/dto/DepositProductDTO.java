@@ -1,18 +1,18 @@
 package org.jgdlbe.product.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DepositProductDTO {
     private UUID productId;
-
     private String finCoNo;
     private String korCoNm;
     private String finPrdtCd;
@@ -21,7 +21,8 @@ public class DepositProductDTO {
     private String spdCnd;
     private String joinMember;
     private String etcNote;
-    private Long   maxLimit;
+    private Long maxLimit;
 
-    private List<DepositRateDTO> rates;
+    private Double minRate;
+    private Double maxRate;
 }

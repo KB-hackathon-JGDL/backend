@@ -57,4 +57,7 @@ public class DepositProduct {
     @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DepositRate> rates = new ArrayList<>();
+
+    @Column(name = "profile", length = 50)
+    private String profile;
 }
