@@ -9,5 +9,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface MentoringReservationRepositoryCustom {
 
-    Page<MentoringReservationEntity> findByFilter(MentoringReservationFilterDTO filter, Pageable pageable);
+    Page<MentoringReservationDTO> findByFilter(MentoringReservationFilterDTO filter, Pageable pageable);
 }

@@ -2,9 +2,12 @@ package org.jgdlbe.mentoringReservation.repository;
 
 import static org.jgdlbe.example.entity.QExampleEntity.exampleEntity;
 import static org.jgdlbe.mentoringReservation.entity.QMentoringReservationEntity.mentoringReservationEntity;
+import static org.jgdlbe.user.entity.QUserEntity.userEntity;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,11 +30,23 @@ public class MentoringReservationRepositoryCustomImpl implements
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<MentoringReservationEntity> findByFilter(MentoringReservationFilterDTO filter,
+    public Page<MentoringReservationDTO> findByFilter(MentoringReservationFilterDTO filter,
         Pageable pageable) {
 
-        List<MentoringReservationEntity> entityList = queryFactory.selectFrom(
-            mentoringReservationEntity)
+        List<MentoringReservationDTO> dtoList = queryFactory
+            .select(Projections.constructor(MentoringReservationDTO.class,
+                mentoringReservationEntity.mentoringReservationId,
+                mentoringReservationEntity.mentorUserId,
+                mentoringReservationEntity.menteeUserId,
+                mentoringReservationEntity.mentoringTime,
+                mentoringReservationEntity.mentoringDate,
+                mentoringReservationEntity.consultationCard,
+                mentoringReservationEntity.chatStatus,
+                getUserName(filter) // 상대방 이름
+            ))
+            .from(mentoringReservationEntity)
+            .leftJoin(userEntity)
+            .on(getUserJoinCondition(filter))
             .where(
                 mentorUserIdEq(filter.getMentorUserId()),
                 menteeUserIdEq(filter.getMenteeUserId())
@@ -49,7 +64,23 @@ public class MentoringReservationRepositoryCustomImpl implements
             )
             .fetchOne();
 
-        return new PageImpl<>(entityList, pageable, total != null ? total : 0);
+        return new PageImpl<>(dtoList, pageable, total != null ? total : 0);
+    }
+
+    private BooleanExpression getUserJoinCondition(MentoringReservationFilterDTO filter) {
+        if (filter.getMentorUserId() != null) {
+            // 멘토 기준 조회 -> 멘티 이름 가져오기
+            return userEntity.userId.eq(mentoringReservationEntity.menteeUserId);
+        } else if (filter.getMenteeUserId() != null) {
+            // 멘티 기준 조회 -> 멘토 이름 가져오기
+            return userEntity.userId.eq(mentoringReservationEntity.mentorUserId);
+        }
+        return null;
+    }
+
+    // 상대방 이름 가져오기
+    private Expression<String> getUserName(MentoringReservationFilterDTO filter) {
+        return userEntity.name;
     }
 
     private BooleanExpression mentorUserIdEq(UUID id){

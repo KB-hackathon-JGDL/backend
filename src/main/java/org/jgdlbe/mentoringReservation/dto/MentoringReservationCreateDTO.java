@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class MentoringReservationCreateDTO {
 
-    private Integer MentoringTime;
-    private LocalDate MentoringDate;
+    private Integer mentoringTime;
+    private LocalDate mentoringDate;
 }
