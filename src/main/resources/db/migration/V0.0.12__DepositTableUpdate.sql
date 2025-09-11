@@ -23,3 +23,5 @@ SET @ddl := IF(@exists = 0,
                'SELECT 1'
             );
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+ALTER TABLE deposit_product ADD COLUMN profile VARCHAR(32) NULL;
